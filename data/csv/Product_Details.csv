@@ -1,0 +1,11 @@
+Product_ID,Product_Name,Category,Price,Stock_Quantity,Rating,Brand,Description
+P001,Wireless Headphones,Electronics,120,150,4.5,Sony,Noise-cancelling wireless headphones with 30-hour battery.
+P002,Gaming Laptop,Electronics,1500,30,4.8,Dell,High-performance gaming laptop with RTX 3070 GPU.
+P003,Stainless Steel Mug,Home & Kitchen,20,200,4.2,Contigo,Insulated stainless steel mug to keep drinks hot or cold.
+P004,Bluetooth Speaker,Electronics,60,80,4.3,JBL,Portable waterproof Bluetooth speaker with great sound.
+P005,Yoga Mat,Sports & Fitness,30,500,4.7,Liforme,"Eco-friendly, non-slip yoga mat with extra thickness."
+P006,LED Desk Lamp,Home & Kitchen,45,120,4,Philips,Adjustable LED desk lamp with multiple brightness settings.
+P007,Air Fryer,Home Appliances,90,75,4.6,Philips,Healthy air fryer with rapid air circulation technology.
+P008,Smartwatch,Wearables,250,50,4.7,Fitbit,Smartwatch with fitness tracking and heart rate monitor.
+P009,Wireless Mouse,Electronics,25,300,4.3,Logitech,Ergonomic wireless mouse with long battery life.
+P010,Electric Kettle,Home Appliances,35,250,4.1,Breville,Fast boiling electric kettle with stainless steel body.

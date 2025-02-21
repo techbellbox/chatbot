@@ -1,6 +1,5 @@
-import mysql.connector
 import csv
-import os  # Import the 'os' module for file path operations
+import os
 
 
 def generate_ddl(csv_file_path, table_name, ddl_output_dir, primary_key_column=None):
@@ -86,96 +85,17 @@ def generate_ddl(csv_file_path, table_name, ddl_output_dir, primary_key_column=N
         return None
 
 
-def upload_csv_to_mysql(csv_file_path, table_name, db_config):
-    """Uploads data from a CSV file to a MySQL table.
-
-    Args:
-        csv_file_path: Path to the CSV file.
-        table_name: Name of the MySQL table.
-        db_config: Dictionary containing database connection details.
-    """
-    try:
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor()
-
-        with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
-            csvreader = csv.DictReader(csvfile)
-
-            header = csvreader.fieldnames  # Get the header from DictReader
-            if not header:
-                print("Error: CSV file appears to be empty (no header).")
-                return
-
-            placeholders = ', '.join(['%s'] * len(header))
-            columns = ', '.join(header)
-            sql = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
-
-            for row in csvreader:
-                values = [row.get(col, None) for col in header] # Use None as default for missing values.
-                cursor.execute(sql, values)
-
-        conn.commit()
-        print(f"Successfully uploaded CSV to {table_name} table!")
-
-    except mysql.connector.Error as err:
-        print(f"MySQL Error: {err}")
-    except FileNotFoundError:
-        print(f"Error: CSV file not found at {csv_file_path}")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            cursor.close()
-            conn.close()
-
-
 def main():
     # --- Configuration ---
-    db_config = {
-        'host': 'localhost',
-        'user': 'root',
-        'password': 'root',
-        'database': 'chatbot_db'
-    }
-    csv_file_path = './Synthetic_Voter_Data_with_Schemes.csv'  # Path to your CSV
+    csv_file_path = './data/csv/Synthetic_Voter_Data_with_Schemes.csv'  # Path to your CSV
     table_name = 'VoterDetails'  # The table name you want to use
-    ddl_output_dir = './ddl'  # Folder to store the DDL file
-    primary_key_column = 'voter_id'  #  Specify the primary key column, or None
+    ddl_output_dir = './data/ddl'  # Folder to store the DDL file
+    primary_key_column = '' 
 
     # --- Generate DDL ---
     ddl_file = generate_ddl(csv_file_path, table_name, ddl_output_dir, primary_key_column)
     if ddl_file:
         print(f"DDL file generated and saved to: {ddl_file}")
-
-
-    # --- Database Operations ---
-    try:
-        #Connect to MySQL
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor()
-        #Create the VoterDetails Table. Read the created DDL file
-        if ddl_file:
-            with open (ddl_file, "r") as ddl_f:
-                sql_script = ddl_f.read()
-            # Execute the SQL script.  Split into separate statements.
-            for statement in sql_script.split(';'):
-                if statement.strip(): #ignore empty statements
-                    cursor.execute(statement)
-            conn.commit()
-        print(f"Table '{table_name}' created successfully (or already exists)!")
-    except mysql.connector.Error as err:
-        print(f"MySQL Error during table creation: {err}")
-        return #Exit if cannot create the table
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            cursor.close()
-            conn.close()
-
-
-
-    # --- Upload CSV Data ---
-    upload_csv_to_mysql(csv_file_path, table_name, db_config)
 
 
 if __name__ == "__main__":
