@@ -1,16 +1,8 @@
-import mysql.connector
+from db_connector import connect_to_db
 import csv
 
-# MySQL database connection details
-db_config = {
-    'host': 'localhost',  # Replace with your MySQL host (e.g., localhost, IP address, etc.)
-    'user': 'root',       # Replace with your MySQL username
-    'password': 'root',  # Replace with your MySQL password
-    'database': 'chatbot_db'  # Replace with your target database name
-}
-
 # Connect to MySQL server
-conn = mysql.connector.connect(**db_config)
+conn = connect_to_db
 cursor = conn.cursor()
 
 # 1. Create the VoterDetails table
